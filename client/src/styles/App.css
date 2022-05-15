@@ -52,20 +52,37 @@
     background: teal !important;
 }
 
-.navbar {
-    height: 50px;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 15px;
-    background: lightgray;
-}
-
-.navbar__links {
-    /*margin-left: auto;*/
-}
-
 .post__btns {
     display: flex;
+}
+
+.post__btns button{
+    margin: 2px;
+}
+
+.auth_form {
+    width: 500px;
+}
+
+.auth-tabs {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.auth-tabs span {
+    margin: 5px;
+    border-radius: 5px;
+    width: 150px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Roboto", sans-serif;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.auth-tabs .active {
+    background: teal;
+    color: white;
 }

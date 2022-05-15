@@ -2,17 +2,17 @@ import React, {useContext} from 'react';
 import {Link} from "react-router-dom";
 import {AuthContext} from "../../../context";
 import MyButton from "../button/MyButton";
+import classes from './Navbar.module.css'
 
 const Navbar = () => {
-    const {setIsAuth} = useContext(AuthContext)
+    const auth = useContext(AuthContext);
     const logout = () => {
-        setIsAuth(false)
-        localStorage.removeItem('auth')
+        auth.logout()
     }
 
     return (
-        <div className={'navbar'}>
-            <div className="navbar__links">
+        <div className={classes.navbar}>
+            <div className={classes.navbar__links}>
                 <Link to="/about">About</Link>
                 <Link to="/posts">Posts</Link>
             </div>

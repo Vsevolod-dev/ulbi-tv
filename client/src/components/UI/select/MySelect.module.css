@@ -1,0 +1,9 @@
+.mySelect {
+    color: teal;
+    border: 1px teal solid;
+    margin-bottom: 5px;
+}
+
+.mySelect:focus-visible {
+    border: 2px teal solid;
+}
