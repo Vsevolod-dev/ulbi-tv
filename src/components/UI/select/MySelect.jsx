@@ -1,10 +1,18 @@
 import React from 'react';
-import classes from './MyInput.module.css'
+import classes from './MySelect.module.css'
 
-const MyInput = React.forwardRef((props, ref) => {
+const MySelect = ({options, defaultValue, value, onChange}) => {
     return (
-        <input ref={ref} {...props} className={classes.myInput} />
+        <select
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+        >
+            <option disabled value="">{defaultValue}</option>
+            {options.map(option =>
+                <option key={option.value} value={option.value}>{option.name}</option>
+            )}
+        </select>
     );
-});
+};
 
-export default MyInput;
+export default MySelect;

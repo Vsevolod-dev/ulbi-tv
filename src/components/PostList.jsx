@@ -12,7 +12,7 @@ const PostList = ({posts, title, remove}) => {
     }
     return (
         <div>
-            <h1 style={{textAlign: 'cente r'}}>
+            <h1 style={{textAlign: 'center', marginTop: '1rem'}}>
                 {title}
             </h1>
             <TransitionGroup>
@@ -20,7 +20,7 @@ const PostList = ({posts, title, remove}) => {
                     <CSSTransition
                         key={post.id}
                         timeout={500}
-                    className={"post"}
+                        classNames={"post"}
                     >
                         <PostItem remove={remove} number={index + 1} post={post}/>
                     </CSSTransition>

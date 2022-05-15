@@ -1,12 +1,10 @@
 import React from 'react';
-import classes from './MyButton.module.css'
+import classes from './MyInput.module.css'
 
-const MyButton = ({children, ...props}) => {
+const MyInput = React.forwardRef((props, ref) => {
     return (
-        <button {...props} className={classes.myBtn}>
-            {children}
-        </button>
+        <input ref={ref} {...props} className={classes.myInput} />
     );
-};
+});
 
-export default MyButton;
+export default MyInput;
