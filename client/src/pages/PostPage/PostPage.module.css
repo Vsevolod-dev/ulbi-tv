@@ -1,0 +1,15 @@
+.post__page {
+    width: 800px;
+}
+
+.post__page h1{
+    margin-top: 20px;
+}
+
+.post__body{
+    margin-top: 20px;
+}
+
+.post__body div{
+    margin-top: 10px;
+}

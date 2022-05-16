@@ -9,7 +9,7 @@ export const useFetching = (cb)=> {
             setLoading(true)
             await cb(...args)
         } catch (e) {
-            if (e.response.data.message) {
+            if (e.response && e.response.data.message) {
                 setError(e.response.data.message)
             } else if (e.message) {
                 setError(e.message)

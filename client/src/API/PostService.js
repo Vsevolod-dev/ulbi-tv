@@ -28,8 +28,25 @@ export default class PostService {
         return response
     }
 
+    static async createComments({body, postId}) {
+        const token = getCookie('token')
+        const response = await axios.post(`/api/post/${postId}/comments`, {
+            body
+        },{
+            headers: {
+                Authorization: 'Bearer ' + token
+            }
+        })
+        return response
+    }
+
     static async getPostComments(id) {
-        const response = await axios.get(`https://jsonplaceholder.typicode.com/posts/${id}/comments`)
+        const token = getCookie('token')
+        const response = await axios.get(`/api/post/${id}/comments`, {
+            headers: {
+                Authorization: 'Bearer ' + token
+            }
+        })
         return response
     }
 

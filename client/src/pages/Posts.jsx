@@ -29,13 +29,10 @@ function Posts() {
     const [fetchPosts, isPostsLoading, postError] = useFetching(async () => {
         const response = await PostService.getAll(limit, page)
         setPosts([...response.data])
-        // setPosts([...posts, ...response.data])
-        // const totalCount = response.headers['x-total-count']
-        // setTotalPages(getPageCount(totalCount, limit))
     })
 
-    const [createPost, isCreatePostLoading, createPostError] = useFetching(async () => {
-        const response = await PostService.createPost(newPost)
+    const [createPost, isCreatePostLoading, createPostError] = useFetching(async (post) => {
+        const response = await PostService.createPost(post)
         if (response.status === 201) {
             new Toast({
                 title: false,
@@ -44,7 +41,7 @@ function Posts() {
                 autohide: true,
                 interval: 3000
             })
-            setPosts([...posts, ...response.data.post])
+            setPosts([...posts, response.data[0]])
         }
     })
 
@@ -59,16 +56,9 @@ function Posts() {
     }, [page, limit]);
 
     const createPostHandler = (newPost) => {
-        setNewPost(newPost)
+        createPost(newPost)
         setModal(false)
     }
-
-    useEffect(() => {
-        if (JSON.stringify(newPost) !== '{}') {
-            createPost()
-            fetchPosts()
-        }
-    }, [newPost])
 
     useEffect(() => {
         if (createPostError !== '' || removePostError !== '') {
