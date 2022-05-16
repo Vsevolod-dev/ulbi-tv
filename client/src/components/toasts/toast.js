@@ -6,11 +6,11 @@
 
 export default class Toast {
     constructor(params) {
-        this._title = params['title'] === false ? false : params['title'] || 'Title';
+        this._title = params['title'] === false ? false : params['title'] || false;
         this._text = params['text'] || 'Message...';
         this._theme = params['theme'] || 'default';
         this._autohide = params['autohide'] && true;
-        this._interval = +params['interval'] || 5000;
+        this._interval = +params['interval'] || 3000;
         this._create();
         this._el.addEventListener('click', (e) => {
             if (e.target.classList.contains('toast__close')) {

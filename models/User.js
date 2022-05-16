@@ -10,12 +10,12 @@ const schema = new Schema({
         type: String,
         required: true
     },
-    // links: [
-    //     {
-    //         type: Types.ObjectId,
-    //         ref: 'Link'
-    //     }
-    // ]
+    posts: [
+        {
+            type: Types.ObjectId,
+            ref: 'Post'
+        }
+    ]
 })
 
 module.exports = model("User", schema)

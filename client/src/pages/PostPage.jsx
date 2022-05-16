@@ -28,7 +28,17 @@ const PostPage = () => {
             <h1>PostPage: {params.id}</h1>
             {isPostLoading
                 ? <Loader/>
-                : <div>{post.title}</div>
+                : <div>
+                    <h2>
+                        <strong>Title: </strong>
+                        {post.title}
+                    </h2>
+                    <h2>
+                        <strong>Description: </strong>
+                        {post.body}
+                    </h2>
+                    {post.owner && <div><strong>Created by:</strong>{post.owner.login}</div>}
+                </div>
             }
             <h1>Comments</h1>
             {isCommentsLoading

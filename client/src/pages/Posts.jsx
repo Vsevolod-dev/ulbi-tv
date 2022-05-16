@@ -13,9 +13,11 @@ import {getPageCount} from "../utils/pages";
 import Pagination from "../components/UI/pagination/Pagination";
 import {useObserver} from "../hooks/useObserver";
 import MySelect from "../components/UI/select/MySelect";
+import Toast from "../components/toasts/toast";
 
 function Posts() {
     const [posts, setPosts] = useState([]);
+    const [newPost, setNewPost] = useState({});
     const [filter, setFilter] = useState({sort: '', query: ''});
     const [modal, setModal] = useState(false);
     const [totalPages, setTotalPages] = useState(0);
@@ -26,25 +28,60 @@ function Posts() {
 
     const [fetchPosts, isPostsLoading, postError] = useFetching(async () => {
         const response = await PostService.getAll(limit, page)
-        setPosts([...posts, ...response.data])
-        const totalCount = response.headers['x-total-count']
-        setTotalPages(getPageCount(totalCount, limit))
+        setPosts([...response.data])
+        // setPosts([...posts, ...response.data])
+        // const totalCount = response.headers['x-total-count']
+        // setTotalPages(getPageCount(totalCount, limit))
+    })
+
+    const [createPost, isCreatePostLoading, createPostError] = useFetching(async () => {
+        const response = await PostService.createPost(newPost)
+        if (response.status === 201) {
+            new Toast({
+                title: false,
+                text: response.statusText,
+                theme: 'success',
+                autohide: true,
+                interval: 3000
+            })
+            setPosts([...posts, ...response.data.post])
+        }
+    })
+
+    const [removePost, isRemovePostLoading, removePostError] = useFetching(async (id) => {
+        await PostService.removePost(id)
     })
 
     useObserver(lastElement, page < totalPages, isPostsLoading, () => setPage(page + 1))
-
 
     useEffect(() => {
         fetchPosts(limit, page)
     }, [page, limit]);
 
-    const createPost = (newPost) => {
-        setPosts([...posts, newPost])
+    const createPostHandler = (newPost) => {
+        setNewPost(newPost)
         setModal(false)
     }
 
-    const removePost = (post) => {
-        setPosts(posts.filter(p => p.id !== post.id))
+    useEffect(() => {
+        if (JSON.stringify(newPost) !== '{}') {
+            createPost()
+            fetchPosts()
+        }
+    }, [newPost])
+
+    useEffect(() => {
+        if (createPostError !== '' || removePostError !== '') {
+            new Toast({
+                text: createPostError ?? removePostError,
+                theme: 'danger'
+            })
+        }
+    }, [createPostError, removePostError])
+
+    const removePostHandler = (post) => {
+        removePost(post._id)
+        setPosts(posts.filter(p => p._id !== post._id))
     }
 
     return (
@@ -53,7 +90,7 @@ function Posts() {
                 Create post
             </MyButton>
             <MyModal visible={modal} setVisible={setModal}>
-                <MyPostFrom create={createPost}/>
+                <MyPostFrom create={createPostHandler}/>
             </MyModal>
             <hr style={{margin: '15px 0'}}/>
             <PostFilter
@@ -77,7 +114,7 @@ function Posts() {
             <div style={{display: 'flex', justifyContent: 'center', marginTop: '1rem'}}>
                 <Loader/>
             </div>}
-            <PostList remove={removePost} posts={sortedAndSearchedPosts} title={'Post list '}/>
+            <PostList remove={removePostHandler} posts={sortedAndSearchedPosts} title={'Post list '}/>
             <div ref={lastElement} style={{height: 20}}/>
             <Pagination
                 totalPages={totalPages}
